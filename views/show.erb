@@ -15,7 +15,7 @@
       <h3 class="current-id-full">Nitrogen Dioxide</h3>
       <div class="current-value">
         <p class="current-value-measure">
-          <span class="current-value-measure-wrap"><%= @no2 ? @no2.current_value : "<small class='current-value-unavailable'>Not available yet.</small>" %></span>
+          <span class="current-value-measure-wrap" id="current-value-no2"><%= @no2 ? @no2.current_value : "<small class='current-value-unavailable'>Not available yet.</small>" %></span>
         </p>
         <span class="current-gauge"></span>
         <span class="current-gauge-filling current-gauge-green"></span>
@@ -27,7 +27,7 @@
       <h3 class="current-id-full">Carbon Monoxide</h3>
       <div class="current-value">
         <p class="current-value-measure">
-          <span class="current-value-measure-wrap"><%= @co ? @co.current_value : "<small class='current-value-unavailable'>Not available yet.</small>" %></span>
+          <span class="current-value-measure-wrap" id="current-value-co"><%= @co ? @co.current_value : "<small class='current-value-unavailable'>Not available yet.</small>" %></span>
         </p>
         <span class="current-gauge"></span>
         <span class="current-gauge-filling current-gauge-green"></span>
@@ -38,7 +38,7 @@
       <h2 class="current-id heading-narrow">Temperature</h2>
       <div class="current-value">
         <p class="current-value-measure">
-          <span class="current-value-measure-wrap"><%= @temperature ? @temperature.current_value : "<small class='current-value-unavailable'>Not available yet.</small>" %></span>
+          <span class="current-value-measure-wrap" id="current-value-temperature"><%= @temperature ? @temperature.current_value : "<small class='current-value-unavailable'>Not available yet.</small>" %></span>
         </p>
         <span class="current-gauge"></span>
         <span class="current-gauge-filling"></span>
@@ -49,7 +49,7 @@
       <h2 class="current-id heading-narrow">Humidity</h2>
       <div class="current-value">
         <p class="current-value-measure">
-          <span class="current-value-measure-wrap"><%= @humidity ? @humidity.current_value : "<small class='current-value-unavailable'>Not available yet.</small>" %></span>
+          <span class="current-value-measure-wrap" id="current-value-humidity"><%= @humidity ? @humidity.current_value : "<small class='current-value-unavailable'>Not available yet.</small>" %></span>
         </p>
         <span class="current-gauge"></span>
         <span class="current-gauge-filling"></span>
@@ -87,3 +87,22 @@
   </div>
 </section>
 
+<% content_for :javascript do %>
+  <script>
+    cosm.setKey("<%= $api_key %>");
+
+    <% if @no2 %>
+      $('#current-value-no2').cosm('live', { feed: <%= @feed.id %>, datastream: '<%= @no2.id %>' });
+    <% end %>
+    <% if @co %>
+      $('#current-value-co').cosm('live', { feed: <%= @feed.id %>, datastream: '<%= @co.id %>' });
+    <% end %>
+    <% if @temperature %>
+      $('#current-value-temperature').cosm('live', { feed: <%= @feed.id %>, datastream: '<%= @temperature.id %>' });
+    <% end %>
+    <% if @humidity %>
+      $('#current-value-humidity').cosm('live', { feed: <%= @feed.id %>, datastream: '<%= @humidity.id %>' });
+    <% end %>
+  </script>
+
+<% end %>

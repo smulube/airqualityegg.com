@@ -167,5 +167,22 @@ describe AirQualityEgg, :type => :request do
         page.should have_content('70')
       end
     end
+
+    it "should have explicit element ids for our spans that contain the data" do
+      visit '/egg/101'
+      page.find('#current-value-no2').should have_content("125")
+      page.find('#current-value-co').should have_content("270023")
+      page.find('#current-value-temperature').should have_content("22")
+      page.find('#current-value-humidity').should have_content("70")
+    end
+
+    it "should render some javascript via content_for to bind elements to live data" do
+      visit '/egg/101'
+      page.should have_content('cosm.setKey("apikey")')
+      page.should have_content("$('#current-value-no2').cosm('live', { feed: 101, datastream: 'NO2_00-04-a3-27-bc-2c_0' })");
+      page.should have_content("$('#current-value-co').cosm('live', { feed: 101, datastream: 'CO_00-04-a3-27-bc-2c_1' })");
+      page.should have_content("$('#current-value-temperature').cosm('live', { feed: 101, datastream: 'Temperature_00-04-a3-9f-c4-66_0' })");
+      page.should have_content("$('#current-value-humidity').cosm('live', { feed: 101, datastream: 'Humidity_00-04-a3-9f-c4-66_1' })");
+    end
   end
 end

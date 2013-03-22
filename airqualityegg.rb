@@ -4,9 +4,11 @@ require 'sinatra/base'
 require 'sinatra/reloader' if Sinatra::Base.development?
 require 'sass'
 require 'cosm-rb'
+require 'sinatra/content_for'
 
 
 class AirQualityEgg < Sinatra::Base
+  helpers Sinatra::ContentFor
 
   configure do
     enable :sessions
